@@ -1,1 +1,3 @@
-# learning-rust
+# Learning Rust
+
+Documenting the journey.
