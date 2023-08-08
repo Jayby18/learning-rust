@@ -1,0 +1,5 @@
+{
+    "rust-analyzer.linkedProjects": [
+        "./Leetcode/383-ransom_note/Cargo.toml"
+    ]
+}
