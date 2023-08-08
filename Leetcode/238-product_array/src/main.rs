@@ -1,7 +1,8 @@
 // Given an integer array nums, return an array answer such that answer[i]
 // is equal to the product of all the elements of nums except nums[i].
 
-// Time complexity = O(n), space complexity = O(1) (but the output array doesn't count towards space).
+// Time complexity = O(n), space complexity = O(1)
+// The output array does not count towards space, but can for extra flex points
 
 // Test case
 
