@@ -1,5 +1,6 @@
 {
     "rust-analyzer.linkedProjects": [
-        "./Leetcode/383-ransom_note/Cargo.toml"
+        "./Leetcode/383-ransom_note/Cargo.toml",
+        "./Leetcode/238-product_array/Cargo.toml"
     ]
 }
