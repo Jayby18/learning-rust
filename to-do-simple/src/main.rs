@@ -1,69 +1,71 @@
 use std::io::{
     self,
-    Write,
+    // Write,
     BufRead,
     ErrorKind,
 };
 use std::fs::{
-    self,
+    // self,
     File
 };
 
 fn main() {
     let file_path = "to-do.txt";
-    let _stdin = io::stdin;
 
-    let list = match load_list(file_path) {
-        Ok(l) => {
-            println!("\nTo do:");
-            for item in l {
-                println!("- {}", item);
-            }
-            return l;
-        },
+    // Open and read file
+    let list = match read_list(file_path) {
+        Ok(l) => l,
         Err(e) => match e.kind() {
             ErrorKind::NotFound => {
-                println!("No to-do's found. Starting from empty list...");
-                return Vec::new();
+                println!("No list found. Starting from scratch...");
+                // return Vec::<String>::new();
+                return ();
             },
-            other => panic!("Problem opening file: {:?}", other),
-        }
+            other => {
+                panic!("Problem opening list: {:?}", other);
+            },
+        },
     };
 
-    // loop {
-    //     let mut user_input = String::new();
+    print_list(&list);
 
-    //     _stdin().read_line(&mut user_input).expect("Failed to read line");
-    //     println!("Input: {}", user_input);
+    // Get user input
+    loop {
+        let mut input = String::new();
+        io::stdin().read_line(&mut input).expect("Failed to read line!");
 
-    //     if user_input == "add item" {
-    //         println!("Added");
-    //     } else if user_input == "exit" {
-    //         println!("Goodbye!");
-    //         break
-    //     } else {
-    //         println!("Not a valid response");
-    //         break
-    //     }
-    // }
+        match input.trim() {
+            "add" => {
+                println!("Adding item");
+            },
+            "list" => {
+                print_list(&list);
+            },
+            "exit" => {
+                println!("Exiting");
+                break
+            },
+            _ => println!("Invalid input!"),
+        }
+    }
 }
 
-fn load_list(path: &str) -> Result<Vec<String>, io::Error> {
-    // Open and read file
+fn read_list(path: &str) -> Result<Vec<String>, io::Error> {
     let file = File::open(path)?;
     let reader = io::BufReader::new(file);
 
-    // Create empty list
-    let mut list: Vec<String> = Vec::new();
+    let mut ret: Vec<String> = Vec::new();
 
-    // Add each line to list
     for line in reader.lines() {
-        let new_line: String = line;
-        list.push(new_line);
+        ret.push(line?);
     }
-    list
+
+    return Ok(ret);
 }
 
-// fn save_list(path: &str) -> Result<> {
-
-// }
+fn print_list(l: &Vec<String>) {
+    println!("\nTo do:");
+    for item in l {
+        println!("- {}", item);
+    }
+}
