@@ -1,6 +1,6 @@
 use std::io::{
     self,
-    // Write,
+    Write,
     BufRead,
     ErrorKind,
 };
@@ -18,7 +18,6 @@ fn main() {
         Err(e) => match e.kind() {
             ErrorKind::NotFound => {
                 println!("No list found. Starting from scratch...");
-                // return Vec::<String>::new();
                 return ();
             },
             other => {
@@ -42,9 +41,18 @@ fn main() {
                 print_list(&list);
             },
             "exit" => {
-                println!("Exiting");
-                break
+                match write_list(file_path, &list) {
+                    Ok(()) => {
+                        println!("Exiting");
+                        break
+                    },
+                    Err(e) => {
+                        println!("Error writing file, please try again later. {:?}", e);
+                        break
+                    }
+                }
             },
+            "q!" => break,
             _ => println!("Invalid input!"),
         }
     }
@@ -68,4 +76,24 @@ fn print_list(l: &Vec<String>) {
     for item in l {
         println!("- {}", item);
     }
+}
+
+fn write_list(path: &str, l: &Vec<String>) -> Result<(), io::Error> {
+    let mut file = match File::open(path) {
+        Ok(f) => f,
+        Err(e) => match e.kind() {
+            ErrorKind::NotFound => {
+                File::create(path)?
+            },
+            other => {
+                return Err(e);
+            },
+        },
+    };
+
+    for item in l {
+        writeln!(file, "{}", item)?;
+    }
+
+    Ok(())
 }
