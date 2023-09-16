@@ -1,12 +1,14 @@
-use std::io::{
-    self,
-    Write,
-    BufRead,
-    ErrorKind,
-};
-use std::fs::{
-    // self,
-    File
+use std::{
+    io::{
+        self,
+        Write,
+        BufRead,
+        ErrorKind,
+    },
+    fs::{
+        self,
+        File,
+    }
 };
 
 fn main() {
